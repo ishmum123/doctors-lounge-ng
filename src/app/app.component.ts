@@ -1,33 +1,33 @@
-import { Component, AfterViewInit } from '@angular/core';
+import {Component} from '@angular/core';
 import '../vendor/jitsi/external_api.js';
 
 declare var JitsiMeetExternalAPI: any;
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  template: `
+    <div style="text-align:center">
+      <h1>
+        Welcome to {{title}}!
+      </h1>
+      <br/>
+      <input type="text" placeholder="Please Enter Roomname" #roomName>
+      <button type="button" (click)="onSubmit(roomName.value, meet)">Submit</button>
+      <br/>
+      <br/>
+      <br/>
+      <div id="meet" #meet></div>
+    </div>
+  `
 })
 export class AppComponent {
-  	title = 'app';
-  	domain:string = "meet.jit.si";
-  	options: any;
-  	api: any;
 
-	constructor()
-	{
-	}
+  title = 'Doctor\'s Lounge';
+  domain = 'meet.jit.si';
+  api: any;
 
-	ngAfterViewInit(): void {
-     
-		this.options = {
-			roomName: "JitsiMeetAPIExample",
-			width: 700,
-			height: 700,
-			parentNode: document.querySelector('#meet')
-		}
-
-		this.api = new JitsiMeetExternalAPI(this.domain, this.options);
-    }
+  onSubmit(roomName: string, meet: HTMLDivElement): void {
+    this.api = new JitsiMeetExternalAPI(this.domain, {roomName: roomName, width: 700, height: 700, parentNode: meet});
+  }
 }
 
